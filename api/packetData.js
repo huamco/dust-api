@@ -56,6 +56,7 @@ router.get('/getElectData',
             }
         ]).allowDiskUse(true).exec(function(err, result){
             if(err) throw err;
+            console.log(result);
             res.json(result)
         });
     }
