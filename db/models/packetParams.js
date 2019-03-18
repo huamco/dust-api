@@ -31,7 +31,7 @@ const packetParamsSchema = mongoose.Schema({
     m_wPressure: {
         type: String
     },
-    m_wParam_runtim: {
+    m_wParam_runtime: {
         type: String
     },
     m_stRunParam: {

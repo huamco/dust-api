@@ -49,6 +49,7 @@ router.post('/authenticate', function (req, res, next) {
 router.post('/',
     function(req, res, next){
     console.log('create user');
+        console.log('req.body::', req.body);
         /*if (User.findOne({ username: req.body.username })) {
             throw 'Username "' + req.body.username + '" is already taken';
         }
@@ -57,6 +58,7 @@ router.post('/',
             .sort({id: -1})
             .exec(function(err, user){
                 if(err) {
+                    console.log('err==>',err);
                     res.status(500);
                     return res.json({success:false, message:err});
                 }
@@ -87,7 +89,7 @@ router.post('/',
 // Update
 router.put('/:id',
     function(req, res, next){
-    console.log('putputputputputput');
+    //console.log('req.body::', req.body);
         User.findOneAndUpdate({id:req.params.id}, req.body)
             .exec(function(err, user){
                 if(err) {
@@ -95,7 +97,7 @@ router.put('/:id',
                     res.json({success:false, message:err});
                 }
                 else if(!user){
-                    res.json({success:false, message:"company not found"});
+                    res.json({success:false, message:"user not found"});
                 }
                 else {
                     res.json({success:true});
