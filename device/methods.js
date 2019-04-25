@@ -1,11 +1,13 @@
 //  Private Method
 function connectionUserInfof(device) {
-    //console.log("[Client Information]");
-    //console.log(device.remoteAddress);
-    //console.log(device.remotePort);
+    // console.log("[Client Information]");
+    // console.log(device.remoteAddress);
+    // console.log(device);
+    // console.log(device.remotePort);
 }
 
 function PRARAM(data) {
+    // console.log("[PRARAM]", data);
     var object = {};
     object['m_byMode'] = data.readUInt8(30).toString(10);
     object['m_byOver_current'] = data.readUInt8(31).toString(10);
@@ -70,6 +72,16 @@ function SPARAM (data) {
     obj['m_byManual_hauto_puls'] = data.readUInt8(97).toString(10);
     obj['m_byAlarm_relay'] = data.readUInt8(98).toString(10);
     obj['m_byFan_on_time'] = data.readUInt8(99).toString(10);
+
+    // add
+    obj['m_wEth_id'] = data.readUInt16LE(100).toString(10);
+    obj['m_byEth_use'] = data.readUInt8(102).toString(10);
+    obj['m_byEth_addr1'] = data.readUInt8(103).toString(10);
+    obj['m_byEth_addr2'] = data.readUInt8(104).toString(10);
+    obj['m_byEth_addr3'] = data.readUInt8(105).toString(10);
+    obj['m_byEth_addr4'] = data.readUInt8(106).toString(10);
+    obj['m_byReserved1'] = data.readUInt8(107).toString(10);
+
     return obj;
 }
 

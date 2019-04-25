@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var moment = require('moment');
 
 const packetParamsSchema = mongoose.Schema({
     dustId: {
@@ -180,6 +181,27 @@ const packetParamsSchema = mongoose.Schema({
         },
         m_byFan_on_time: {
             type: String
+        },
+        m_wEth_id: {
+            type: String
+        },
+        m_byEth_use: {
+            type: String
+        },
+        m_byEth_addr1: {
+            type: String
+        },
+        m_byEth_addr2: {
+            type: String
+        },
+        m_byEth_addr3: {
+            type: String
+        },
+        m_byEth_addr4: {
+            type: String
+        },
+        m_byReserved1: {
+            type: String
         }
     },
     m_fParam_power: {
@@ -191,6 +213,27 @@ const packetParamsSchema = mongoose.Schema({
     m_byReserved: [{
         type: String,
     }],
+    m_wTSensor_data: {
+        type: String
+    },
+    m_wP1Sensor_data: {
+        type: String
+    },
+    m_wP2Sensor_data: {
+        type: String
+    },
+    m_wP3Sensor_data: {
+        type: String
+    },
+    m_wP4Sensor_data: {
+        type: String
+    },
+    m_byTSensor_status: {
+        type: String
+    },
+    m_byPSensor_status: {
+        type: String
+    },
     m_byChk1: {
         type: String
     },
@@ -203,6 +246,22 @@ const packetParamsSchema = mongoose.Schema({
     createDate: {
         type: Date,
         default: () => new Date(),
+    },
+    createDateYYYYMMDDHH: {
+        type: Number,
+        default: () => moment(new Date()).format('YYYYMMDDHH'),
+    },
+    createDateYYYYMMDD: {
+        type: Number,
+        default: () => moment(new Date()).format('YYYYMMDD'),
+    },
+    createDateYYYYMM: {
+        type: Number,
+        default: () => moment(new Date()).format('YYYYMM'),
+    },
+    createDateYYYY: {
+        type: Number,
+        default: () => moment(new Date()).format('YYYY'),
     }
 });
 

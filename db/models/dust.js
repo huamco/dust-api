@@ -21,6 +21,9 @@ const dustSchema = mongoose.Schema({
     dustName: {
         type: String
     },
+    dustSN: {
+        type: String
+    },
     image: String,
     m_wAuto_puls_val: Number,
     m_wPower_value: Number,

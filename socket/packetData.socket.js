@@ -4,6 +4,7 @@ const PacketParams = mongoose.model('PacketParams');
 module.exports = function(io, socket){
     var dataMap = new Map();
     var testArray = [];
+    let checkDeviceDataSeq = 0;
 
     console.log("Socket ID: " + socket.id);
     socket.on('disconnect', function(){
@@ -11,9 +12,10 @@ module.exports = function(io, socket){
         console.log("socket disconnected!");
     });
 
-    socket.on('byebye', function(exit_id) {
+    socket.on('byebye', function(param) {
         console.log('socket byebye:::::::::::');
-        dataMap.delete(exit_id);
+        socket.broadcast.emit('byebye', param.serialNumber);
+        dataMap.delete(param.socketId);
     });
 
     socket.on('Device-Data', function (bufferData) {
@@ -25,20 +27,25 @@ module.exports = function(io, socket){
             testArray.push({"id":key, "data": value});
         }
         const saveLogData = new PacketParams(JSON.parse(bufferData.data));
-        //console.log('bufferData.data=>', testArray);
-        /*console.log(typeof(saveLogData));*/
 
-        saveLogData.save(function(saveErr){
-            if(saveErr) throw saveErr;
-        });
+        if(checkDeviceDataSeq % 5 === 0) {
+            saveLogData.save(function (saveErr) {
+                if (saveErr) throw saveErr;
+            });
+            checkDeviceDataSeq = 0;
+        }
 
         io.emit("Device_Monitoring_Data", JSON.stringify(testArray));
         testArray = [];
+        checkDeviceDataSeq++;
     });
 
     socket.on("DeviceSetting", function(data){
         //console.log("[Device Setting!!!]");
-        //console.log(data.socket_id);
+        /*console.log(data);
+        console.log('::::::::::::::::::::::::::::::::::::::::');
+        console.log(socket);
+        console.log('#####################################');*/
         io.to(data.socket_id).emit("DeviceSetting2", data);
     });
 

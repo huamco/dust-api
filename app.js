@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
+var json2xls = require('json2xls');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
@@ -25,6 +26,7 @@ module.exports = function (db) {
         }
     });
 
+    app.use(json2xls.middleware);
     app.use(fileUpload());
     app.use(logger('dev'));
     app.use(cookieParser());

@@ -6,7 +6,7 @@ function stringToHex(value) {
 
 module.exports.jsonToHex = function jsonToBuffer(jsonData) {
     var parsedData = JSON.parse(jsonData);
-    var buffer = Buffer.alloc(116);
+    var buffer = Buffer.alloc(136);
     var position=0;
     buffer.writeUInt8(stringToHex(parsedData['m_byStart']), position++);
     buffer.writeUInt8(stringToHex(parsedData['m_byCmd']), position++);
@@ -87,17 +87,35 @@ module.exports.jsonToHex = function jsonToBuffer(jsonData) {
     buffer.writeUInt8(stringToHex(parsedData['m_stSysParam']['m_byAlarm_relay']), 98);
     buffer.writeUInt8(stringToHex(parsedData['m_stSysParam']['m_byFan_on_time']), 99);
 
-    buffer.writeFloatLE(parseFloat(parsedData['m_fParam_power']), 100);
-    buffer.writeUInt16LE(stringToHex(parsedData['m_wReserved'][0]), 105);
-    buffer.writeUInt16LE(stringToHex(parsedData['m_wReserved'][1]), 107);
+    // add
+    buffer.writeUInt16LE(stringToHex(parsedData['m_stSysParam']['m_wEth_id']), 100);
+    buffer.writeUInt8(stringToHex(parsedData['m_stSysParam']['m_byEth_use']), 102);
+    buffer.writeUInt8(stringToHex(parsedData['m_stSysParam']['m_byEth_addr1']), 103);
+    buffer.writeUInt8(stringToHex(parsedData['m_stSysParam']['m_byEth_addr2']), 104);
+    buffer.writeUInt8(stringToHex(parsedData['m_stSysParam']['m_byEth_addr3']), 105);
+    buffer.writeUInt8(stringToHex(parsedData['m_stSysParam']['m_byEth_addr4']), 106);
+    buffer.writeUInt8(stringToHex(parsedData['m_stSysParam']['m_byReserved1']), 107);
+
+    buffer.writeFloatLE(parseFloat(parsedData['m_fParam_power']), 108);   //100
+    buffer.writeUInt16LE(stringToHex(parsedData['m_wReserved'][0]), 112); //105
+    buffer.writeUInt16LE(stringToHex(parsedData['m_wReserved'][1]), 114); //107
+
+    //add
+    buffer.writeInt16LE(stringToHex(parsedData['m_wTSensor_data']), 116);
+    buffer.writeInt16LE(stringToHex(parsedData['m_wP1Sensor_data']), 118);
+    buffer.writeInt16LE(stringToHex(parsedData['m_wP2Sensor_data']), 120);
+    buffer.writeInt16LE(stringToHex(parsedData['m_wP3Sensor_data']), 122);
+    buffer.writeInt16LE(stringToHex(parsedData['m_wP4Sensor_data']), 124);
+    buffer.writeUInt8(stringToHex(parsedData['m_byTSensor_status']), 126);
+    buffer.writeUInt8(stringToHex(parsedData['m_byPSensor_status']), 127);
 
     for(var i=0; i<5; i++ ) {
-        buffer.writeUInt8(stringToHex(parsedData['m_byReserved'][i]), 109+i);
+        buffer.writeUInt8(stringToHex(parsedData['m_byReserved'][i]), 128+i); //109
     }
 
-    buffer.writeUInt8(stringToHex(parsedData['m_byChk1']), 113);
-    buffer.writeUInt8(stringToHex(parsedData['m_byChk2']), 114);
-    buffer.writeUInt8(stringToHex(parsedData['m_byEnd']), 115);
+    buffer.writeUInt8(stringToHex(parsedData['m_byChk1']), 133); //113
+    buffer.writeUInt8(stringToHex(parsedData['m_byChk2']), 134); //114
+    buffer.writeUInt8(stringToHex(parsedData['m_byEnd']), 135);  //115
 
     //console.log(buffer.toString('hex'));
     var recvBuffer = new Buffer(buffer.length);
@@ -121,7 +139,7 @@ module.exports.jsonToHex = function jsonToBuffer(jsonData) {
     console.log('recvBuffer[dataSize - 2]:::',recvBuffer[dataSize - 2]);*/
 
     console.log('hex checksum ok');
-    buffer.writeUInt8(stringToHex(crcBuff[1].toString(10)), 113);
-    buffer.writeUInt8(stringToHex(crcBuff[0].toString(10)), 114);
+    buffer.writeUInt8(stringToHex(crcBuff[1].toString(10)), 133); //113
+    buffer.writeUInt8(stringToHex(crcBuff[0].toString(10)), 134); //114
     return buffer;
 }

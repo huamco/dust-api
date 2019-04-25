@@ -85,7 +85,6 @@ router.post('/',
 // Update
 router.put('/:id',
     function(req, res, next){
-        console.log('req.params.id==>', req);
         Dust.findOneAndUpdate({id:req.params.id}, req.body)
             .exec(function(err, dustLocation){
                 if(err) {
